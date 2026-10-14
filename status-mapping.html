@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Mapping Status - PT Padepokan Tujuh Sembilan</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between relative">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="logo.jpg" alt="Logo" class="h-8 w-auto object-contain" onerror="this.src='logo.jpg'">
+                <span class="font-semibold text-gray-900 tracking-tight text-sm sm:text-base">Recruitment Portal</span>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <a href="index.html" class="text-gray-600 hover:text-emerald-600 transition">Home</a>
+                <a href="status-reference.html" class="text-gray-600 hover:text-emerald-600 transition">Reference Check Progress Status</a>
+                <a href="status-mapping.html" class="text-emerald-600 font-semibold">Client Mapping Status</a>
+            </nav>
+
+            <!-- Top Right WhatsApp Button -->
+            <div>
+                <a href="https://wa.me/6282123758753?text=Halo%20HC%20PT%20Padepokan%20Tujuh%20Sembilan,%20saya%20ingin%20bertanya%20terkait%20proses%20rekrutmen." 
+                   target="_blank" 
+                   class="inline-flex items-center justify-center space-x-2 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition">
+                    <i class="fab fa-whatsapp text-base"></i>
+                    <span>Contact HR Recruitment</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-xl mx-auto px-4 py-12 flex-grow flex flex-col justify-center w-full">
+        <div class="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 sm:p-8 text-center">
+            
+            <img src="logo.jpg" alt="Padepokan 79" class="h-10 mx-auto mb-6 object-contain" onerror="this.src='logo.jpg'">
+            
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                Client Mapping Status
+            </h1>
+            <p class="text-gray-500 text-xs sm:text-sm mb-6">
+                Enter your registered email address to check your candidate mapping status across our client placements.
+            </p>
+
+            <!-- Input Form -->
+            <form id="statusForm" onsubmit="checkMappingStatus(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-2 tracking-wider">CANDIDATE EMAIL</label>
+                    <input type="email" id="candidateEmail" required placeholder="name@email.com" 
+                           class="w-full px-4 py-3 rounded-xl bg-blue-50/60 border border-blue-100 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow transition text-sm flex justify-center items-center">
+                    <span>Check Mapping Status</span>
+                </button>
+            </form>
+
+            <!-- Loading Box -->
+            <div id="loadingBox" class="hidden my-6 text-indigo-600 text-xs font-medium animate-pulse flex items-center justify-center space-x-2">
+                <i class="fas fa-spinner fa-spin text-sm"></i>
+                <span>Searching client mapping records across databases...</span>
+            </div>
+
+            <!-- Result Box -->
+            <div id="resultBox" class="hidden mt-6 text-left space-y-4">
+                <div class="text-xs text-gray-500 border-b pb-2 flex justify-between items-center">
+                    <span>Candidate Name: <strong id="candidateNameDisp" class="text-gray-800"></strong></span>
+                    <span id="mappingCountBadge" class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium"></span>
+                </div>
+                <div id="mappingCardsContainer" class="space-y-3"></div>
+            </div>
+
+            <div class="mt-8 text-xs">
+                <a href="index.html" class="text-gray-400 hover:text-gray-600 transition">← Back to Main Home</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Floating WhatsApp Button (Bottom Right) -->
+    <a href="https://wa.me/6282123758753?text=Halo%20HC%20PT%20Padepokan%20Tujuh%20Sembilan,%20saya%20ingin%20bertanya%20terkait%20proses%20rekrutmen." 
+       target="_blank" 
+       class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 z-50"
+       title="Contact HR Recruitment via WhatsApp">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500">
+        &copy; 2026 PT Padepokan Tujuh Sembilan. All rights reserved.
+    </footer>
+
+    <script>
+        // URL WEB APP TERHUBUNG KE APPS SCRIPT MAPPING TALENT VERSI TERBARU
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtMZTS_lQPxGBmiA6p79vsCtFXrpvYw4y7AXKqofo2UgfOpT_892jggsfufcFK4XqT/exec";
+
+        async function checkMappingStatus(e) {
+            e.preventDefault();
+            const email = document.getElementById('candidateEmail').value.trim();
+            const loadingBox = document.getElementById('loadingBox');
+            const resultBox = document.getElementById('resultBox');
+            const candidateNameDisp = document.getElementById('candidateNameDisp');
+            const cardsContainer = document.getElementById('mappingCardsContainer');
+            const countBadge = document.getElementById('mappingCountBadge');
+
+            resultBox.classList.add('hidden');
+            cardsContainer.innerHTML = '';
+            countBadge.innerText = '';
+            loadingBox.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`${APPS_SCRIPT_URL}?email=${encodeURIComponent(email)}`);
+                const data = await response.json();
+
+                loadingBox.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+
+                if (data && data.status === 'success') {
+                    candidateNameDisp.innerText = data.candidateName || email;
+
+                    if (data.mappings && Array.isArray(data.mappings) && data.mappings.length > 0) {
+                        countBadge.innerText = `${data.mappings.length} Client(s)`;
+                        data.mappings.forEach(item => {
+                            cardsContainer.appendChild(createMappingCard(item.client, item.role, item.status));
+                        });
+                    } else {
+                        countBadge.innerText = `0 Clients`;
+                        cardsContainer.innerHTML = `
+                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm leading-relaxed">
+                                <div class="font-bold mb-1"><i class="fas fa-hourglass-half mr-1"></i> Status: In Review / Unassigned</div>
+                                <p>Hello <span class="font-bold">${data.candidateName || email}</span>, your profile is currently being evaluated by our talent team for active client matching opportunities. Please kindly wait for further updates.</p>
+                            </div>
+                        `;
+                    }
+                } else if (data && data.status === 'not_found') {
+                    cardsContainer.innerHTML = `
+                        <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs sm:text-sm leading-relaxed">
+                            <div class="font-bold mb-1"><i class="fas fa-exclamation-circle mr-1"></i> Status: Email Not Found</div>
+                            <p>We couldn't find any candidate records associated with <strong>${email}</strong> in our Reference Check database. Please make sure you entered the correct registered email.</p>
+                        </div>
+                    `;
+                } else {
+                    cardsContainer.innerHTML = `
+                        <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs sm:text-sm leading-relaxed">
+                            <div class="font-bold mb-1"><i class="fas fa-info-circle mr-1"></i> Notice</div>
+                            <p>${data.message || 'Unable to retrieve status. Please verify your email address.'}</p>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                loadingBox.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+                candidateNameDisp.innerText = email;
+
+                cardsContainer.innerHTML = `
+                    <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs sm:text-sm leading-relaxed">
+                        <div class="font-bold mb-1"><i class="fas fa-wifi mr-1"></i> Connection Notice</div>
+                        <p>Unable to fetch mapping status. Please ensure your script is deployed with access set to 'Anyone'.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function createMappingCard(clientName, roleName, statusText) {
+            const card = document.createElement('div');
+            const lowerStatus = (statusText || '').toLowerCase().trim();
+
+            let bgClass = "bg-amber-50 border-amber-200 text-amber-900";
+            let badgeClass = "bg-amber-100 text-amber-800 border-amber-300";
+            let iconClass = "fa-clock";
+            let descText = "Your profile has been submitted to the client and is currently awaiting feedback. Please kindly wait for further updates.";
+
+            if (lowerStatus.includes('failed') || lowerStatus.includes('cancelled')) {
+                bgClass = "bg-rose-50 border-rose-200 text-rose-900";
+                badgeClass = "bg-rose-100 text-rose-800 border-rose-300";
+                iconClass = "fa-times-circle";
+                descText = "Thank you for your interest and effort. Regrettably, your application for this client will not be moving forward at this time.";
+            } else if (lowerStatus.includes('allocated') || lowerStatus.includes('passed')) {
+                bgClass = "bg-emerald-50 border-emerald-200 text-emerald-900";
+                badgeClass = "bg-emerald-100 text-emerald-800 border-emerald-300";
+                iconClass = "fa-check-circle";
+                descText = "Congratulations! You have successfully passed the selection stage for this client and are currently proceeding to the administrative/onboarding stage.";
+            }
+
+            const roleBadge = roleName ? `<span class="text-xs font-medium text-gray-600 block sm:inline sm:ml-2">(${roleName})</span>` : '';
+
+            card.className = `p-4 rounded-xl border text-xs sm:text-sm leading-relaxed ${bgClass}`;
+            card.innerHTML = `
+                <div class="flex justify-between items-start sm:items-center mb-1 gap-2">
+                    <div>
+                        <span class="font-bold text-sm uppercase tracking-wide inline-flex items-center gap-1.5">
+                            <i class="fas ${iconClass}"></i> ${clientName}
+                        </span>
+                        ${roleBadge}
+                    </div>
+                    <span class="font-semibold text-xs px-2.5 py-0.5 rounded-full border ${badgeClass} shrink-0">${statusText}</span>
+                </div>
+                <p class="mt-2 text-xs sm:text-sm">${descText}</p>
+            `;
+            return card;
+        }
+    </script>
+</body>
+</html>
